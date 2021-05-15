@@ -1,4 +1,5 @@
 <script>
+import firebase from "../utilities/firebase";
 export default {
   data() {
     return {
@@ -6,7 +7,7 @@ export default {
       password: "",
       emailState: null,
       passwordState: null,
-      submittedEmail: [],
+      // submittedEmail: [],
     };
   },
   methods: {
@@ -24,6 +25,15 @@ export default {
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       bvModalEvt.preventDefault();
       // Trigger submit handler
       this.handleSubmit();
@@ -34,7 +44,7 @@ export default {
         return;
       }
       // Push the name to submitted names
-      this.submittedEmail.push(this.email);
+      // this.submittedEmail.push(this.email);
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide("modal-prevent-closing");
@@ -89,5 +99,4 @@ export default {
     </b-modal>
   </div>
 </template>
-<style >
-</style>
+<style></style>
